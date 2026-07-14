@@ -1,0 +1,5 @@
+# CodeBuddy Skills
+.references/
+*.log
+.DS_Store
+Thumbs.db

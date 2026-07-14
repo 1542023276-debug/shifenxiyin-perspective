@@ -1,6 +1,6 @@
-# 十分吸引 · 石磊的投资思维操作系统（AI Skill）
+# 十分吸引 · 石磊的思维操作系统（AI Skill）
 
-把财经播客《十分吸引》主播 **石磊** 的投资思维框架与说话方式，蒸馏成一个可运行的 AI Skill（WorkBuddy / Claude Code 等通用）。
+把财经播客《十分吸引》主播 **石磊** 的思维框架与说话方式，蒸馏成一个可运行的 AI Skill（WorkBuddy / Claude Code 等通用）。
 不是复制人，是提炼一套能用的认知操作系统：用石磊的心智模型看你自己的问题。节目里敏姐负责追问与落地，但本 Skill 交付的，是石磊一个人的观点。
 
 ## 这是什么
@@ -14,7 +14,23 @@
 
 母题：**系统化洞察，从混沌中发现价值；多元化适应，在变革中把握机遇。**
 
-## 安装（WorkBuddy）
+## 安装
+
+### 方式一：SkillHub 一键安装（推荐）
+
+1. 打开 [SkillHub](https://skillhub.tencent.com)
+2. 搜索「shifenxiyin-perspective」或「石磊」
+3. 点击「安装」即可
+
+### 方式二：CodeBuddy 插件市场
+
+```bash
+/plugin marketplace add <你的GitHub仓库地址>
+/plugin install shifenxiyin-perspective@shifenxiyin-skills
+/reload-plugins
+```
+
+### 方式三：WorkBuddy 手动安装
 
 把 `shifenxiyin-perspective/` 整个文件夹放进 skills 目录：
 
@@ -30,7 +46,7 @@ mkdir -p .workbuddy/skills
 cp -R shifenxiyin-perspective .workbuddy/skills/
 ```
 
-在 WorkBuddy 中重启/新开会话即可生效；之后直接说触发词（见下）即可自动激活，无需手动加载。
+安装后重启/新开会话即可生效；直接说触发词（见下）即可自动激活，无需手动加载。
 
 ## 怎么用
 
@@ -62,7 +78,7 @@ cp -R shifenxiyin-perspective .workbuddy/skills/
 - **它不做预测。** 框架的核心信念就是"复杂系统给不出预测"，所以它给的是机制、路标和赔率结构，不是"明天涨还是跌"。
 - **交付的是石磊的个人视角**，默认不替敏姐发言；节目里敏姐的追问与补充仅作语境，不进入默认输出。
 - **语料截至 2026-06-28**（Vol.72），之后的观点变化未覆盖。
-- **不是石磊或敏姐本人**，也不代表「吸引子」的官方观点。仅基于公开播客内容提炼，供学习与思维训练使用。
+- **不是石磊或敏姐本人**，也不代表「吸引子」的官方观点。仅基于公开播客内容提炼，供思维训练与认知扩展使用。
 
 ## 目录结构
 
