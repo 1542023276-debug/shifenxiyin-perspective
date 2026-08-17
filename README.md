@@ -1,6 +1,6 @@
 # 十分吸引 · 石磊的思维操作系统（AI Skill）
 
-把财经播客《十分吸引》主播 **石磊** 的思维框架与说话方式，蒸馏成一个可运行的 AI Skill（WorkBuddy / Claude Code 等通用）。
+把财经播客《十分吸引》常驻嘉宾 **石磊** 的思维框架与说话方式，蒸馏成一个可运行的 AI Skill（WorkBuddy / Claude Code 等通用）。
 不是复制人，是提炼一套能用的认知操作系统：用石磊的心智模型看你自己的问题。节目里敏姐负责追问与落地，但本 Skill 交付的，是石磊一个人的观点。
 
 ## 这是什么
@@ -22,28 +22,23 @@
 2. 搜索「shifenxiyin-perspective」或「石磊」
 3. 点击「安装」即可
 
-### 方式二：CodeBuddy 插件市场
+### 方式二：手动安装到 CodeBuddy
 
-```bash
-/plugin marketplace add <你的GitHub仓库地址>
-/plugin install shifenxiyin-perspective@shifenxiyin-skills
-/reload-plugins
-```
-
-### 方式三：WorkBuddy 手动安装
-
-把 `shifenxiyin-perspective/` 整个文件夹放进 skills 目录：
+将 `shifenxiyin-perspective/` 整个文件夹放入 CodeBuddy 的 skills 目录：
 
 **用户级（所有项目可用）**
 ```bash
-mkdir -p ~/.workbuddy/skills
-cp -R shifenxiyin-perspective ~/.workbuddy/skills/
+# Windows
+xcopy /E /I shifenxiyin-perspective %USERPROFILE%\.codebuddy\skills\shifenxiyin-perspective
+
+# macOS / Linux
+cp -R shifenxiyin-perspective ~/.codebuddy/skills/
 ```
 
 **项目级（仅当前项目）**
 ```bash
-mkdir -p .workbuddy/skills
-cp -R shifenxiyin-perspective .workbuddy/skills/
+# 任意系统
+cp -R shifenxiyin-perspective .codebuddy/skills/
 ```
 
 安装后重启/新开会话即可生效；直接说触发词（见下）即可自动激活，无需手动加载。
@@ -72,6 +67,20 @@ cp -R shifenxiyin-perspective .workbuddy/skills/
 
 想退出角色：说「退出」「不用扮演了」。
 
+## 新手必读：常见反模式
+
+| # | 反模式 | 为什么效果不好 | 正确做法 |
+|---|--------|---------------|---------|
+| 1 | **把它当算命工具** — 问"明天涨跌""该不该买" | 框架不给预测 | 改问："主要矛盾是什么？脆弱点在哪？" |
+| 2 | **问题太泛** — "怎么看中国经济？" | 系统太大，什么都能说等于什么都没说 | 加角度："信用往哪个部门派生？" |
+| 3 | **拿它抬杠** — "但巴菲特说……" | 它不是辩论对手 | 问"有没有可能我漏掉了什么？" |
+| 4 | **跳过角色扮演，只要干货** — "列一下 7 个模型" | 核心价值是用模型想问题 | 问一个你真实面临的具体问题 |
+| 5 | **期待投资方案** — "帮我配个组合" | 不给投资建议是设计底线 | 学框架："全天候的底层逻辑是什么？" |
+| 6 | **一个模型套所有** — 什么都说"这是反脆弱" | 7 个模型各有场景 | 先分类再选模型 |
+| 7 | **期待敏姐出现** — "敏姐会怎么说？" | 默认只交付石磊视角 | 明确问"敏姐怎么看这个问题？" |
+
+> 完整 FAQ（10 个常见问题）和 7 组完整对话示例请见 SKILL.md 附录部分。
+
 ## 重要边界
 
 - **这是思维框架，不是投资建议。** 不构成任何买卖推荐，不给点位/仓位指令。市场有风险，决策自负。
@@ -84,15 +93,17 @@ cp -R shifenxiyin-perspective .workbuddy/skills/
 
 ```
 shifenxiyin-perspective/
-├── SKILL.md                       # 主体：心智模型 / 启发式 / 表达DNA / 工作流
-├── README.md
-└── references/research/
-    ├── 00-source-map.md           # 语料来源地图
-    ├── 03-expression-dna.md       # 表达DNA + 逐字稿原文样本
-    └── 05-heuristics-cases.md     # 决策启发式与案例出处
+├── SKILL.md                       # 主体：心智模型 / 启发式 / 表达DNA / 工作流（Skill 运行所需唯一文件）
+├── README.md                      # 本文件
+└── references/research/           # 调研参考（供查阅，非 Skill 运行必需）
+    ├── 00-source-map.md           # 语料来源地图与主题聚类
+    ├── 03-expression-dna.md       # 表达DNA + 逐字稿原文样本（含敏姐语料）
+    └── 05-heuristics-cases.md     # 决策启发式详解与实战案例
 ```
 
-原始逐字稿未随包分发（第三方版权内容）。播客主页：https://shifenxiyin.podhood.com/
+> **说明**：`references/research/` 目录中的编号（00/03/05）对应调研阶段的工作文档编号。01（心智模型草稿）和 02/04（中间过程笔记）为内部调研产物，已整合到 SKILL.md 中，不再单独分发。所有 Skill 运行所需内容均在 `SKILL.md` 中。
+
+原始逐字稿未随包分发（第三方版权内容）。播客主页：https://shifenxiyin.com
 
 ---
 
