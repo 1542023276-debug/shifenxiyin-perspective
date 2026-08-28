@@ -1,16 +1,16 @@
 {
   "name": "shifenxiyin-skills",
   "owner": {
-    "name": "敏姐",
+    "name": "《十分吸引》节目",
     "email": ""
   },
-  "description": "《十分吸引》播客官方 Skills 市场——石磊的投资思维操作系统",
+  "description": "《十分吸引》节目官方 Skills 市场——复杂系统思维操作系统",
   "plugins": [
     {
       "name": "shifenxiyin-perspective",
       "source": ".",
-      "version": "1.0.0",
-      "description": "石磊的投资思维操作系统：7个核心心智模型、12条决策启发式、石磊表达DNA。系统化洞察从混沌中发现价值，多元化适应在变革中把握机遇。",
+      "version": "1.3.0",
+      "description": "《十分吸引》节目的思维操作系统：7个核心心智模型、15条决策启发式、节目表达DNA。基于77期约270万字语料。观点代表节目官方观点。系统化洞察从混沌中发现价值，多元化适应在变革中把握机遇。",
       "skills": ["./SKILL.md"]
     }
   ]
