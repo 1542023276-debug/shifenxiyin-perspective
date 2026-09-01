@@ -356,7 +356,7 @@ A: 直接说"退出"切回正常模式，然后重新说触发词重新激活。
 
 ## 附录：调研来源
 
-调研过程详见 `references/research/`（00 来源地图 / 03 表达 DNA / 05 决策启发式与案例）。
+调研过程详见根目录下的 00-source-map.md、03-expression-dna.md、05-heuristics-cases.md。
 
 ### 一手来源（占比 100%）
 - 《十分吸引》播客逐字稿 Vol.01–Vol.77（2024-09-25 ~ 2026-08-16，约 270 万字），播客主页 https://shifenxiyin.com
