@@ -100,9 +100,8 @@ shifenxiyin-perspective/
 ├── 03-expression-dna.md           # 表达风格 + 逐字稿原文样本
 ├── 05-heuristics-cases.md         # 决策启发式详解与实战案例
 ├── 06-ep01-transcript.md          # EP.01《黄金、美债与凯文·沃什》完整逐字稿
-└── scripts/                       # 往期语料本地检索工具（可选，见下）
-    ├── corpus_build.py            #   语料目录 → 全文索引
-    └── corpus_search.py           #   索引检索（多词 AND / -any / -n）
+├── corpus_build.py                # 往期语料本地检索工具（可选，见下）：语料目录 → 全文索引
+└── corpus_search.py               #   索引检索（多词 AND / -any / -n）
 ```
 
 > **说明**：调研文档编号（00/03/05/06）对应调研阶段的工作文档编号。01（心智模型草稿）和 02/04（中间过程笔记）为内部调研产物，已整合到 SKILL.md 中，不再单独分发。所有 Skill 运行所需内容均在 `SKILL.md` 中。全部文档均放在包根目录，不使用子目录（安装器的路径安全限制）。
@@ -117,11 +116,11 @@ Skill 内置的 EP.01 逐字稿只是语料样本；**Vol.01–77 全量往期�
    `~/shifenxiyin-corpus/transcripts/Vol.63_尼采与反脆弱.md`
 2. 生成全文索引（Python ≥ 3.8，仅标准库）：
    ```bash
-   python <skill 目录>/scripts/corpus_build.py <语料目录>
+   python <skill 目录>/corpus_build.py <语料目录>
    ```
 3. 使用：当问及"某期讲过什么/原话怎么说"时，Skill 会调用检索工具自动命中具体期号、章节与发言原文：
    ```bash
-   python <skill 目录>/scripts/corpus_search.py 关键词1 [关键词2 ...]
+   python <skill 目录>/corpus_search.py 关键词1 [关键词2 ...]
    ```
    索引位置默认读环境变量 `SHIFENXIYIN_CORPUS_DIR`，缺省为 `~/shifenxiyin-corpus/corpus_index.json`。
 

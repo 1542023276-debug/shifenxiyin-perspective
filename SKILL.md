@@ -128,13 +128,13 @@ description: 《十分吸引》节目的思维操作系统——一套用复杂�
 
 **当用户问"节目/嘉宾某期讲过什么、原话怎么说的"这类往期内容问题时，优先查本地语料库**——它比联网搜索更能命中节目原话（具体期号、章节、谁说的、原文片段）。
 
-- 运行 `python <skill 目录>/scripts/corpus_search.py <词1> [词2 ...]`。
+- 运行 `python <skill 目录>/corpus_search.py <词1> [词2 ...]`。
   - 多词默认 AND（全部命中才返回）；加 `-any` 放宽为任一命中；`-n <数量>` 控制返回条数（默认 10）。
   - 索引位置缺省自动探测：`SHIFENXIYIN_CORPUS_DIR` 环境变量 → 其次 `~/shifenxiyin-corpus/corpus_index.json`。
 - 命中结果含：期号/文件名、章节、说话人、时间、发言段。引用时注明"出自 Vol.XX 第 Y 章（Z 时间）"。
 - 索引不存在时脚本会给出安装提示。此时说明本机未装全量语料（往期语料为版权内容，**不随 skill 分发**），退回到内置 EP.01 语料（`06-ep01-transcript.md`）+ 联网检索。
 
-> **使用者可选安装全量语料**：把逐字稿按每期一个文件（md/txt，内容为全文）放进语料目录（如 `~/shifenxiyin-corpus/transcripts/Vol.63_尼采与反脆弱.md`），运行 `python <skill 目录>/scripts/corpus_build.py <语料目录>` 生成索引即可。要求 Python ≥ 3.8（仅标准库，无第三方依赖）。
+> **使用者可选安装全量语料**：把逐字稿按每期一个文件（md/txt，内容为全文）放进语料目录（如 `~/shifenxiyin-corpus/transcripts/Vol.63_尼采与反脆弱.md`），运行 `python <skill 目录>/corpus_build.py <语料目录>` 生成索引即可。要求 Python ≥ 3.8（仅标准库，无第三方依赖）。
 
 ## 框架身份卡
 
