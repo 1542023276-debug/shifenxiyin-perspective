@@ -13,9 +13,9 @@ corpus_search.py — 十分吸引逐字稿本地语料检索
     - 命中时返回: 期号/文件名、章节、说话人、时间、发言段文本
 
 注意:
-    - 本 skill 公开版仅内置 EP.01 语料样本（见 06-ep01-transcript.md）。
-    - Vol.01-77 全量语料为版权内容，不随 skill 分发；如需检索全部往期，
-      请自行准备语料目录并先运行 corpus_build.py 生成索引。
+    - 所有逐字稿（Vol.01-77 与 EP.01 等）均为节目版权内容，不随 skill 分发。
+    - 如需检索往期原话，请自行准备获授权的语料目录，
+      先运行 corpus_build.py 生成索引。
 """
 import json
 import os
@@ -27,8 +27,8 @@ sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 NOT_INSTALLED_MSG = (
     "[corpus_search] 未找到全量语料索引。\n"
-    "十分吸引 skill 公开版仅内置 EP.01 语料样本。"
-    "如需检索 Vol.01-77 全部往期逐字稿：\n"
+    "所有逐字稿为节目版权内容，不随 skill 分发。"
+    "如需检索往期逐字稿：\n"
     "  1) 准备一个语料目录（如 ~/shifenxiyin-corpus/transcripts，"
     "文件名形如 Vol.63_尼采与反脆弱.md，内容为逐字稿全文）\n"
     "  2) 运行: python corpus_build.py <语料目录>\n"
