@@ -1,6 +1,6 @@
 ---
 name: shifenxiyin-perspective
-version: 1.6.4
+version: 1.6.5
 author: 《十分吸引》节目
 category: 思维模型
 tags: [决策科学, 复杂系统, 反脆弱, 认知框架, 人生成长]
