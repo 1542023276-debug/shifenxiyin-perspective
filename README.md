@@ -20,7 +20,7 @@
 ### 方式一：SkillHub 一键安装（推荐）
 
 1. 打开 [SkillHub](https://skillhub.tencent.com)
-2. 搜索「shifenxiyin-perspective」或「十分吸引」
+2. 搜索「shifenxiyin-perspective」或「吸引子」
 3. 点击「安装」即可
 
 ### 方式二：手动安装到 CodeBuddy
