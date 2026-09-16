@@ -100,7 +100,7 @@ cp -R attractor-perspective .codebuddy/skills/
 
 ```
 shifenxiyin-perspective/
-├── SKILL.md                       # 入口（8KB）：触发词 / 执行逻辑 / 输出规范 / 工作流 / 模型索引 / 路由表
+├── SKILL.md                       # 入口（6.7KB）：触发词 / 执行逻辑 / 输出规范 / 开口前自检 / 模型索引 / 路由表
 ├── README.md                      # 本文件
 ├── macro_api.md                   # 官方接口文档（服务方提供，随包）：Base URL / Key / 接口 / 指标清单 / 限流
 ├── corpus_build.py                # 往期语料本地检索工具（可选，见下）：语料目录 → 全文索引
@@ -108,11 +108,11 @@ shifenxiyin-perspective/
 ├── macro_latest.py                # 宏观数据核查工具：吸引子宏观数据服务指标查询（宏观数字的默认数据源，见下）
 ├── macro_apikey.txt               #   API Key 本地配置（授权凭证，发布前务必删除，不随包分发）
 └── references/                    # 按需加载的细节（SKILL.md 里有「何时读哪个」的路由表）
-    ├── 01-methodology.md          # 纲领《吸引子方法论》全文 + 五步速览
+    ├── 01-methodology.md          # 纲领《吸引子方法论》全文 + 五步速览 + 研究的十个维度
     ├── 02-core-models.md          # 框架身份卡 + 7 个心智模型 + 选择罗盘 + 智识谱系
     ├── 03-heuristics.md           # 决策启发式
     ├── 04-heuristics-cases.md     # 启发式详解与实战案例
-    ├── 05-style-rules.md          # 表达风格规则 + 自检清单（每次回答前必读）
+    ├── 05-style-rules.md          # 表达风格规则 + 语感样本 + 自检完整版（按需读；自检精简版已内联在入口）
     ├── 06-expression-dna.md       # 逐字稿原文样本（few-shot 语感库）
     ├── 07-examples.md             # 9 个完整对话示例
     ├── 08-tools.md                # 语料考古 + 宏观数据核查的用法
@@ -120,7 +120,7 @@ shifenxiyin-perspective/
     └── 10-source-map.md           # 语料来源地图与主题聚类
 ```
 
-> **分层加载（progressive disclosure）**：这是 **v1.10.x 的结构改造**。以前所有内容都塞在 SKILL.md 里（85KB），每次激活都被整体读入上下文、token 开销大。现在 SKILL.md 只留「每次都要用」的部分（8KB），细节拆到 `references/` 按需读取——**入口文件保留触发逻辑与路由表当索引**，需要哪个模型/哪个场景再读哪一份。README 与 SKILL.md 都给出了路由表。
+> **分层加载（progressive disclosure）**：**v1.10.x** 把内容从 SKILL.md（85KB）拆到 `references/`，入口降到 8KB；**v1.11.0** 再进一步——把 05-style-rules.md 从「每次必读」降级为按需读取（自检清单的精简版内联进入口），工具语法与研究维度同步下沉。**每次激活成本从 12.7KB 降到 6.7KB（省 47%）**，且不再有任何「每次必读」的 reference。入口只留触发逻辑、红线、免责声明、七个模型索引与开口前自检；需要哪个细节再读哪一份。README 与 SKILL.md 都给出了路由表。
 
 > **说明**：调研文档编号（00/03/05）对应调研阶段的工作文档编号；**编号 01 现由纲领性文件《吸引子方法论》占用**。原 01（心智模型草稿）和 02/04（中间过程笔记）为内部调研产物，已整合进分包，不再单独分发。v1.10.x 起所有细节文档统一收在 `references/` 下并按主题重新编号。
 
