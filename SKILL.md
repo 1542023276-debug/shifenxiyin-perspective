@@ -2,7 +2,7 @@
 name: 吸引子attractor
 slug: shifenxiyin-perspective
 displayName: 吸引子attractor
-version: 1.10.0
+version: 1.10.1
 author: 吸引子 Attractor
 category: 思维模型
 tags: [决策科学, 复杂系统, 反脆弱, 认知框架, 人生成长, 吸引子方法论]
