@@ -31,7 +31,7 @@
 **如何调用**（需本机有 Python ≥ 3.8，与语料检索工具同条件；若 `python` 不在 PATH，用本机任意 Python 3.8+ 运行时执行同一命令即可）：
 - 全量清单：`python <skill 目录>/macro_latest.py --list`（中国 27 项 + 全球 24 项）
 - 查询最新状态：`python <skill 目录>/macro_latest.py <指标名或secId> [...]`，中文名自动匹配（如 `python <skill 目录>/macro_latest.py "中国-物价" "全球-美元流动性"`）
-- 健康检查：`python <skill 目录>/macro_latest.py --health`
+- 健康检查（**仅排障用**，正常查询不必先探活；加 `--raw` 看完整 JSON）：`python <skill 目录>/macro_latest.py --health`
 - 读数口径（对齐服务方官方文档 macro_api.md）：`value` 归一化至 [-1,1]（0≈中性，越接近 ±1 越极端）；`state`=当期状态，三档：`上升`/`中性`/`下降`（由最新 value 符号决定，value≈0 时报"中性"）；`stateChange`=相对上期的状态跳变：`维持`/`转中性`/`转入上升`/`转入下降`（历史不足两期时为 null）。判断"路标有没有发生反转"要看方向与 `stateChange` 是否连续，而不是单看一期 `value`。
 
 **读数如何转成判断：方向 × 置信度**（把上面的口径转成语义的关键一层，回答里引用读数时按此解读）：
@@ -58,5 +58,7 @@
 - 工具不可用（无 Python 环境、接口故障、Key 缺失）时，如实退回联网研究，不硬编数字。
 - 顺序纪律：先 macro_latest.py、后 WebSearch，不可颠倒——宏观/市场数字默认以吸引子读数为准，WebSearch 只补 API 覆盖不到的定性事实。
 - 遵守服务限流（每秒 10 / 每分钟 100 / 每天 1000 次）：一次把需要的指标查齐，不要反复试错。
+- **不要先跑健康检查再查询**：`--health` 与查询共享同一限流配额，每次预检等于把可用查询次数砍半；服务方明确要求直接请求 `/macro/latest`，接口真出问题时查询本身会返回 401/429/5xx，按报错处理即可，`--health` 只在怀疑服务异常时单独用。
+- **接口路径以随包文档 `macro_api.md` 为准，禁止试探/猜测未文档化的端点**（如 `/ping`）。服务方健康检查已于 2026-09-16 从 `/macro/health` 迁移到 `/health`（旧路径已 404），未文档化的路径不保证存在，乱试只会在对方日志里制造噪音。
 
 **Key 配置与隐私**：API Key 是服务授权凭证，从环境变量 `ATTRACTOR_API_KEY` 或本 skill 目录下 `macro_apikey.txt` 读取（本地配置文件，不随包分发）。**Key 从哪来：服务方官方接口文档随包提供（`macro_api.md`），§2 认证方式里有服务方公开的示例 apikey**——把它写入本目录 `macro_apikey.txt` 首行即完成配置（官方文档本来就公开这个 key，"文档里有 key"说的就是它，不是包里的隐藏文件；本 skill 的 SKILL.md/README 均不写明文 key）。调用只把 secId 发给数据服务，读数即取即用，**不上传语料、不落地存储**；分享或发布本 skill 时 `macro_apikey.txt` 不随包，收件人按上面指引自行配置即可。

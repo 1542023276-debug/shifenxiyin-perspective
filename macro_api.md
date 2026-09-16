@@ -1,4 +1,5 @@
 > **随包说明**：本文件是服务方提供的官方接口文档，收编进 skill 目录供自助配置 API Key、核对接口与指标清单。正文与官方文档一致（收录于 2026-09-08）。
+> **2026-09-16 依服务方通知修订**：健康检查接口由 `/macro/health` 迁至 `/health`（旧路径已 404），响应新增各层服务状态；详见 §4.2。
 > 配置 Key：见 §2 的公开示例 apikey，写入本 skill 目录下 `macro_apikey.txt` 首行即可（该 key 由官方文档明文公开）。
 
 # 吸引子宏观数据服务 API 文档
@@ -164,10 +165,14 @@ POST /macro/latest
 
 ### 4.2 健康检查
 
+> **2026-09-16 变更**：路径由 `/macro/health` 调整为 `/health`，旧路径已下线（返回 404）。
+> 响应同步升级为"各层服务状态"视图（数据库层 + 微服务层），不再是单一的 `macro_service` 状态。
+> 另注：**查询宏观数据前无需先调健康检查**，直接请求 `/macro/latest` 即可，两者共享限流配额。
+
 **接口地址**
 
 ```
-GET /macro/health
+GET /health
 ```
 
 **请求参数**
@@ -178,22 +183,46 @@ GET /macro/health
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| `service` | String | 服务名（`macro_service`） |
-| `status` | String | `healthy` |
-| `initialized` | Boolean | 初始化标记 |
-| `timestamp` | String | 检查时间 |
+| `app` | String | 应用名（如 `freehand`） |
+| `timestamp` | Number | 检查时间戳（Unix 秒） |
+| `database` | Object | 数据库层：`databases` 下按组件（mysql / neo4j / postgres）给出 `status`，关系库再细到各库 |
+| `services` | Object | 微服务层：`services_count` 计数 + 各服务（含 `status` / `initialized` / `components` 子组件） |
+| `status` | String | 各层与整体状态，`healthy` 为正常 |
 
-**响应示例**
+> 结构随部署演进，消费方建议按"找带 `status` 的节点"自适应解析，不要写死层级。
+
+**响应示例**（节选，实测于 2026-09-16）
 
 ```json
 {
   "success": true,
-  "message": "Health check completed",
   "data": {
-    "service": "macro_service",
-    "status": "healthy",
-    "initialized": true,
-    "timestamp": "2026-09-08T14:43:43.330461"
+    "app": "freehand",
+    "timestamp": 1789547072.4574356,
+    "database": {
+      "databases": {
+        "mysql": {"component": "mysql", "status": "healthy",
+                  "databases": {"att_db": {"status": "healthy"},
+                                "att_index_db": {"status": "healthy"}}},
+        "neo4j": {"component": "neo4j", "status": "healthy"},
+        "postgres": {"component": "postgres", "status": "healthy",
+                     "databases": {"freehand_vector_db": {"status": "healthy"}}}
+      }
+    },
+    "services": {
+      "services_count": 10,
+      "status": "healthy",
+      "report_service": {
+        "service": "report_service",
+        "status": "healthy",
+        "initialized": true,
+        "timestamp": "2026-09-16T16:24:32.457401",
+        "components": {
+          "embedding_service": {"service": "embedding_service", "status": "healthy", "initialized": true},
+          "llm_service": {"service": "llm_service", "status": "healthy", "initialized": true}
+        }
+      }
+    }
   }
 }
 ```
@@ -219,7 +248,8 @@ GET /macro/health
 | 每分钟 | 100 次 |
 | 每天 | 1000 次 |
 
-> 限流在网关层按 API Key 计数，`/macro/latest` 与 `/macro/health` 共享同一配额。
+> 限流在网关层按 API Key 计数，`/macro/latest` 与 `/health` 共享同一配额。
+> 因此**正常查询前不必先做健康检查**：每次预检都会占用同一份配额，等于把可用查询次数砍半。
 
 **超限返回**
 
@@ -256,7 +286,7 @@ curl -X POST https://jackal.attractorcap.com/crusty/macro/latest \
 ### 健康检查
 
 ```bash
-curl https://jackal.attractorcap.com/crusty/macro/health \
+curl https://jackal.attractorcap.com/crusty/health \
   -H "apikey: cXa5FY63HOlWXiUV7iNgY5p42tr4QCpu"
 ```
 

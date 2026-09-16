@@ -7,7 +7,8 @@ macro_latest.py — 吸引子宏观数据服务 · 宏观指标最新状态查�
 
 用法:
     python macro_latest.py --list                 # 列出全部可查指标（中国 27 + 全球 24）
-    python macro_latest.py --health               # 健康检查
+    python macro_latest.py --health               # 健康检查（仅排障用；正常查询不必先探活）
+    python macro_latest.py --health --raw         # 健康检查原始 JSON（含各层服务状态）
     python macro_latest.py <指标1> [指标2 ...]     # 查询指标最新数据
     python macro_latest.py --key <apikey> ...     # 显式指定 API Key
     python macro_latest.py --base <url> ...       # 显式指定 Base URL
@@ -33,6 +34,8 @@ API Key 读取顺序:
     - 指标是宏观状态指数、不是行情价格，请作"路标/背景板"用，配合联网研究一起判断
     - API Key 是服务授权凭证，从环境变量或 macro_apikey.txt 读取（见上）；macro_apikey.txt 不随 skill 分发
     - 服务方官方接口文档随包提供（macro_api.md）: Base URL / Key / 接口 / 指标清单 / 限流说明均以它为准
+    - 查询前无需先做健康检查：直接查 /macro/latest 即可；health 与 latest 共享限流配额，多余探活会白白吃掉一半日配额
+    - 接口路径一律以 macro_api.md 为准，不要自行试探/猜测未文档化的端点（如 /ping）
 """
 import json
 import os
@@ -164,17 +167,57 @@ def call(base, key, method, path, body=None):
             return e.code, {"message": raw}
 
 
-def do_health(base, key):
-    status, payload = call(base, key, "GET", "/macro/health")
+def _walk_status(node, path, out):
+    """递归收集响应中所有带 status 字段的节点。
+
+    服务方 health 响应会随部署演进（已加入 database / services 等分层），
+    这里不写死层级，避免服务方一加字段就解析不到。
+    """
+    if isinstance(node, dict):
+        if "status" in node:
+            label = node.get("service") or node.get("component") or (path or "root")
+            out.append((label, node["status"], node.get("initialized")))
+        for k, v in node.items():
+            if isinstance(v, (dict, list)):
+                _walk_status(v, f"{path}.{k}" if path else k, out)
+    elif isinstance(node, list):
+        for i, v in enumerate(node):
+            _walk_status(v, f"{path}[{i}]", out)
+
+
+def do_health(base, key, raw=False):
+    """健康检查 GET /health。
+
+    2026-09-16 服务方把健康检查由 /macro/health 调整为 /health（旧路径已 404），
+    并在响应中加入各层服务状态。默认只报总状态与异常组件，--raw 打印完整 JSON。
+    """
+    status, payload = call(base, key, "GET", "/health")
     if status != 200:
         print(f"[macro_latest] 健康检查失败 HTTP {status}: {payload}")
         return 4
-    data = payload.get("data", {})
-    print(f"service: {data.get('service')}")
-    print(f"status:  {data.get('status')}")
-    print(f"initialized: {data.get('initialized')}")
-    print(f"timestamp: {data.get('timestamp')}")
-    print(f"message: {payload.get('message')}")
+    if raw:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return 0
+    data = payload.get("data") or {}
+    items = []
+    _walk_status(data, "", items)
+    bad = [x for x in items if str(x[1]).lower() not in ("healthy", "ok", "up", "true")]
+    svc = data.get("services") or {}
+    overall = (data.get("status") or svc.get("status")
+               or ("healthy" if not bad else "degraded"))
+    count = data.get("services_count") or svc.get("services_count")
+    print(f"overall:  {overall}")
+    if data.get("app"):
+        print(f"app:      {data['app']}")
+    if count:
+        print(f"services: {count}")
+    if not bad:
+        print(f"components: {len(items)} 项全部 healthy")
+    else:
+        print(f"异常组件（共检查 {len(items)} 项）：")
+        for label, st, init in bad:
+            tail = f"  initialized={init}" if init is not None else ""
+            print(f"  {label}: {st}{tail}")
     return 0
 
 
@@ -228,13 +271,15 @@ def main():
             for sid, name in GLOBAL:
                 print(f"  {sid}  {name}")
             return 0
+        elif a == "--raw":
+            i += 1
         elif a == "--health":
             key = key or load_apikey()
             if not key:
                 print("[macro_latest] 未配置 API Key：请设置环境变量 ATTRACTOR_API_KEY，"
                       "或在脚本同目录放置 macro_apikey.txt")
                 return 2
-            return do_health(base, key)
+            return do_health(base, key, raw=("--raw" in args))
         else:
             tokens.append(a); i += 1
     if not tokens:
