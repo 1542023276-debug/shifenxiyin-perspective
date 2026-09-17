@@ -1,6 +1,6 @@
 > **随包说明**：本文件是服务方提供的官方接口文档，收编进 skill 目录供自助配置 API Key、核对接口与指标清单。正文与官方文档一致（收录于 2026-09-08）。
 > **2026-09-16 依服务方通知修订**：健康检查接口由 `/macro/health` 迁至 `/health`（旧路径已 404），响应新增各层服务状态；详见 §4.2。
-> 配置 Key：见 §2 的公开示例 apikey，写入本 skill 目录下 `macro_apikey.txt` 首行即可（该 key 由官方文档明文公开）。
+> 配置 Key：需**自行向服务方申请**——本文件中出现的 `apikey` 一律为占位示例（`<YOUR_API_KEY>`），不可直接使用。取得自己的 Key 后，写入本 skill 目录下 `macro_apikey.txt` 首行，或设置环境变量 `ATTRACTOR_API_KEY`。
 
 # 吸引子宏观数据服务 API 文档
 
@@ -18,8 +18,10 @@
 采用 **API Key** 认证，请求需在 HTTP Header 携带：
 
 ```
-apikey: cXa5FY63HOlWXiUV7iNgY5p42tr4QCpu
+apikey: <YOUR_API_KEY>
 ```
+
+其中 `<YOUR_API_KEY>` 为占位符，需替换为**自己向服务方申请**的 Key；不要照抄任何文档中的示例值——所有使用者共用同一凭证会被共享限流，且服务方可随时停用该凭证。
 
 未携带或 Key 无效时返回 `401`。
 
@@ -278,7 +280,7 @@ Retry-After: <秒数>
 
 ```bash
 curl -X POST https://jackal.attractorcap.com/crusty/macro/latest \
-  -H "apikey: cXa5FY63HOlWXiUV7iNgY5p42tr4QCpu" \
+  -H "apikey: <YOUR_API_KEY>" \
   -H "Content-Type: application/json" \
   -d '{"sec_ids":["att_00000042"]}'
 ```
@@ -287,8 +289,10 @@ curl -X POST https://jackal.attractorcap.com/crusty/macro/latest \
 
 ```bash
 curl https://jackal.attractorcap.com/crusty/health \
-  -H "apikey: cXa5FY63HOlWXiUV7iNgY5p42tr4QCpu"
+  -H "apikey: <YOUR_API_KEY>"
 ```
+
+> 上例中的 `<YOUR_API_KEY>` 仅为占位符，请替换为自行申请的 Key。
 
 ## 8. 注意事项
 
