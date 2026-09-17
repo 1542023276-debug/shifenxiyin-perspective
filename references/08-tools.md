@@ -61,4 +61,4 @@
 - **不要先跑健康检查再查询**：`--health` 与查询共享同一限流配额，每次预检等于把可用查询次数砍半；服务方明确要求直接请求 `/macro/latest`，接口真出问题时查询本身会返回 401/429/5xx，按报错处理即可，`--health` 只在怀疑服务异常时单独用。
 - **接口路径以随包文档 `macro_api.md` 为准，禁止试探/猜测未文档化的端点**（如 `/ping`）。服务方健康检查已于 2026-09-16 从 `/macro/health` 迁移到 `/health`（旧路径已 404），未文档化的路径不保证存在，乱试只会在对方日志里制造噪音。
 
-**Key 配置与隐私**：API Key 是服务授权凭证，从环境变量 `ATTRACTOR_API_KEY` 或本 skill 目录下 `macro_apikey.txt` 读取（本地配置文件，不随包分发）。**Key 从哪来：服务方官方接口文档随包提供（`macro_api.md`），§2 认证方式里有服务方公开的示例 apikey**——把它写入本目录 `macro_apikey.txt` 首行即完成配置（官方文档本来就公开这个 key，"文档里有 key"说的就是它，不是包里的隐藏文件；本 skill 的 SKILL.md/README 均不写明文 key）。调用只把 secId 发给数据服务，读数即取即用，**不上传语料、不落地存储**；分享或发布本 skill 时 `macro_apikey.txt` 不随包，收件人按上面指引自行配置即可。
+**Key 配置与隐私**：API Key 是服务授权凭证，从环境变量 `ATTRACTOR_API_KEY` 或本 skill 目录下 `macro_apikey.txt` 读取（本地配置文件，不随包分发）。**Key 从哪来：需自行向服务方申请**——随包 `macro_api.md` 是接口文档，其中出现的 apikey 全部是占位示例（`<YOUR_API_KEY>`），不可直接使用；取得自己的 Key 后写入本目录 `macro_apikey.txt` 首行即完成配置。调用只把 secId 发给数据服务，读数即取即用，**不上传语料、不落地存储**；分享或发布本 skill 时 `macro_apikey.txt` 不随包，收件人自行申请并配置即可。
